@@ -1,6 +1,7 @@
 package com.yyw.fangkuaiyi.security.jwt.realm;
 
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.yyw.fangkuaiyi.account.AccountFacade;
 import com.yyw.fangkuaiyi.account.pojo.Account;
 import com.yyw.fangkuaiyi.role.pojo.Role;
@@ -19,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class JWTRealm extends AuthorizingRealm {
 
-    @Autowired
+    @Reference(client = "netty4")
     private AccountFacade accountFacade;
     @Autowired
     private Tokens jwtTokens;

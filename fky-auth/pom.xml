@@ -17,12 +17,12 @@
     <dependencies>
         <dependency>
             <groupId>com.yyw</groupId>
-            <artifactId>fky-dubbox</artifactId>
+            <artifactId>fky-interface</artifactId>
             <version>${yyw.version}</version>
         </dependency>
         <dependency>
             <groupId>com.yyw</groupId>
-            <artifactId>fky-service-account</artifactId>
+            <artifactId>fky-dubbox-netty4</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <!-- shiro -->

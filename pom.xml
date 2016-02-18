@@ -8,10 +8,11 @@
   <modules>
     <module>fky-api</module>
     <module>fky-auth</module>
-    <module>fky-dubbox</module>
+    <module>fky-interface</module>
     <module>fky-service-account</module>
     <module>fky-utils</module>
     <module>fky-resteasy-netty4</module>
+    <module>fky-dubbox-netty4</module>
   </modules>
   <packaging>pom</packaging>
 

@@ -1,5 +1,6 @@
 package com.yyw.fangkuaiyi.security.shiro.realm;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.yyw.fangkuaiyi.account.AccountFacade;
 import com.yyw.fangkuaiyi.account.pojo.Account;
 import com.yyw.fangkuaiyi.security.ShiroUser;
@@ -14,6 +15,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 
 import javax.annotation.PostConstruct;
@@ -24,6 +26,7 @@ import javax.annotation.PostConstruct;
 //@Component
 public class StandardRealm extends AuthorizingRealm {
 
+//    @Reference(client = "netty4")
     @Autowired
     private AccountFacade accountFacade;
 

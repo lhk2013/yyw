@@ -1,5 +1,7 @@
 package com.yyw.fangkuaiyi;
 
+import com.yyw.fangkuaiyi.account.AccountFacade;
+import com.yyw.fangkuaiyi.account.pojo.Account;
 import com.yyw.fangkuaiyi.resteasy.NettyServer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -13,7 +15,7 @@ public class FkyRestApiMain {
     public static void main(String[] args)
             throws Exception {
 
-        ApplicationContext ac = new ClassPathXmlApplicationContext("root-context.xml");
+        ApplicationContext ac = new ClassPathXmlApplicationContext("root-context.xml","consumer.xml");
         Assert.notNull(ac);
 //        Assert.notNull(ac.getBean(HomeController.class));
 
