@@ -26,8 +26,8 @@ import javax.annotation.PostConstruct;
 //@Component
 public class StandardRealm extends AuthorizingRealm {
 
-//    @Reference(client = "netty4")
-    @Autowired
+    @Reference(client = "netty4")
+//    @Autowired
     private AccountFacade accountFacade;
 
     @PostConstruct
