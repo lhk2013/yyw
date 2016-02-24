@@ -12,6 +12,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 //public interface UserDao extends PagingAndSortingRepository<User, Long> {
 public interface UserDao extends JpaRepository<User, Long> {
 
-	User findById(Long id);
 	User findByLoginName(String loginName);
 }

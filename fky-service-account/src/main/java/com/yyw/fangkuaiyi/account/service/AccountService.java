@@ -31,6 +31,6 @@ public class AccountService implements AccountFacade {
     }
 
     public Account findAccount(Long id) {
-        return BeanMapper.map(userDao.findById(id),Account.class);
+        return BeanMapper.map(userDao.findOne(id),Account.class);
     }
 }

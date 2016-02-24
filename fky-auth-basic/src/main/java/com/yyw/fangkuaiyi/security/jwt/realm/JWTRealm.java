@@ -33,7 +33,7 @@ public class JWTRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) {
         JWTAuthenticationToken upToken = (JWTAuthenticationToken) token;
-        Account user = accountFacade.findAccount((Long) upToken.getUserId());
+        Account user = accountFacade.findAccount(Long.parseLong(upToken.getUserId()+""));
 
         if (user != null && jwtTokens.validateToken(upToken.getToken())) {
             SimpleAccount account = new SimpleAccount(new ShiroUser(user.getId(),user.getLoginName(),user.getAliasName()), upToken.getToken(), getName());

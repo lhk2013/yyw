@@ -4,9 +4,9 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.yyw.fangkuaiyi.account.AccountFacade;
 import com.yyw.fangkuaiyi.account.pojo.Account;
 import com.yyw.fangkuaiyi.security.ShiroUser;
-import com.yyw.fangkuaiyi.security.utils.Encodes;
 import com.yyw.fangkuaiyi.security.utils.constants.Securitys;
 
+import com.yyw.fangkuaiyi.util.Encodes;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -14,8 +14,6 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 
 import javax.annotation.PostConstruct;

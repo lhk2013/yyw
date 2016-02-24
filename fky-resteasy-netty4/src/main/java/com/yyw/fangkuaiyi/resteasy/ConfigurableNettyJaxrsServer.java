@@ -1,7 +1,11 @@
 package com.yyw.fangkuaiyi.resteasy;
 
 import com.yyw.fangkuaiyi.resteasy.handlers.CorsHeadersChannelHandler;
-import com.yyw.fangkuaiyi.resteasy.handlers.ShiroHandler;
+
+import com.yyw.fangkuaiyi.security.handlers.AuthBasicHandler;
+import com.yyw.fangkuaiyi.security.handlers.JwtHandler;
+import com.yyw.fangkuaiyi.security.handlers.ShiroHandler;
+import com.yyw.fangkuaiyi.security.handlers.StatelessHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -12,6 +16,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.ssl.SslHandler;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.mgt.SecurityManager;
 import org.jboss.resteasy.core.SynchronousDispatcher;
 import org.jboss.resteasy.plugins.server.netty.*;
@@ -137,6 +142,7 @@ public class ConfigurableNettyJaxrsServer extends NettyJaxrsServer {
 		eventLoopGroup = new NioEventLoopGroup(ioWorkerCount);
 		eventExecutor = new NioEventLoopGroup(executorThreadCount);
 		deployment.start();
+		SecurityUtils.setSecurityManager(securityManager);
 		final RequestDispatcher dispatcher = new RequestDispatcher((SynchronousDispatcher)deployment.getDispatcher(), deployment.getProviderFactory(), domain);
 		// Configure the server.
 		if (sslContext == null) {
@@ -149,10 +155,14 @@ public class ConfigurableNettyJaxrsServer extends NettyJaxrsServer {
 							ch.pipeline().addLast(new HttpObjectAggregator(maxRequestSize));
 							ch.pipeline().addLast(new HttpResponseEncoder());
 
-
 							ch.pipeline().addLast(new RestEasyHttpRequestDecoder(dispatcher.getDispatcher(), root, RestEasyHttpRequestDecoder.Protocol.HTTP));
 							ch.pipeline().addLast(new CorsHeadersChannelHandler());
-							ch.pipeline().addLast(new ShiroHandler(securityManager));
+
+							ch.pipeline().addLast(new ShiroHandler());
+							ch.pipeline().addLast(new StatelessHandler());
+							ch.pipeline().addLast(new AuthBasicHandler());
+							ch.pipeline().addLast(new JwtHandler());
+
 							ch.pipeline().addLast(new RestEasyHttpResponseEncoder());
 							ch.pipeline().addLast(eventExecutor, new RequestHandler(dispatcher));
 						}
@@ -173,6 +183,12 @@ public class ConfigurableNettyJaxrsServer extends NettyJaxrsServer {
 							ch.pipeline().addLast(new HttpResponseEncoder());
 							ch.pipeline().addLast(new RestEasyHttpRequestDecoder(dispatcher.getDispatcher(), root, RestEasyHttpRequestDecoder.Protocol.HTTPS));
 							ch.pipeline().addLast(new CorsHeadersChannelHandler());
+
+							ch.pipeline().addLast(new ShiroHandler());
+							ch.pipeline().addLast(new StatelessHandler());
+							ch.pipeline().addLast(new AuthBasicHandler());
+							ch.pipeline().addLast(new JwtHandler());
+
 							ch.pipeline().addLast(new RestEasyHttpResponseEncoder());
 							ch.pipeline().addLast(eventExecutor, new RequestHandler(dispatcher));
 						}

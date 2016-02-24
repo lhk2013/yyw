@@ -7,21 +7,19 @@ import com.yyw.fangkuaiyi.security.jwt.TokenResponse;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 /**
  * Created by lins on 16-2-18.
  */
 @Controller
-@Path("/account")
+@Path("/auth")
 public class AccountEndpoint {
 
     @Autowired
@@ -50,5 +48,14 @@ public class AccountEndpoint {
         ShiroUser cuuser = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
         TokenResponse token = tokens.createToken(cuuser);
         return token;
+    }
+
+    @GET
+    @Path("/tet")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
+    @RequiresRoles("admin")
+    public String tet() {
+        return "------auth.tet()-------";
     }
 }
