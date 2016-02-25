@@ -1,18 +1,13 @@
 package com.yyw.fangkuaiyi.api;
 
-import com.yyw.fangkuaiyi.account.pojo.Account;
-import com.yyw.fangkuaiyi.security.ShiroUser;
-import com.yyw.fangkuaiyi.security.jwt.JWTTokenService;
-import com.yyw.fangkuaiyi.security.jwt.TokenResponse;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import com.yyw.fangkuaiyi.codec.response.StandardResult;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -27,7 +22,7 @@ public class IndexEndpoint {
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     @RequiresRoles("admin")
-    public String tet() {
-        return "------index.tet()-------";
+    public StandardResult tet() {
+        return new StandardResult("------index.tet()-------");
     }
 }

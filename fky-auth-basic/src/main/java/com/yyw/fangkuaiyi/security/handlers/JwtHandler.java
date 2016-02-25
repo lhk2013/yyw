@@ -33,22 +33,22 @@ public class JwtHandler extends SimpleChannelInboundHandler<JwtHttpRequest> {
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, JwtHttpRequest jwt) throws Exception {
         StandardResult result = null;
         NettyHttpRequest request = (NettyHttpRequest) jwt.getRequest();
+        if (request.getHttpMethod().equals("OPTIONS")){channelHandlerContext.fireChannelRead(request);
+            return;}
         if (isLoggedAttempt(request)) {
-            AuthenticationToken token = createToken(request);
+            try {
+                AuthenticationToken token = createToken(request);
 
-            if (token!=null){
-                try {
+                if (token!=null){
                     Subject e = SecurityUtils.getSubject();
                     e.login(token);
 
                     channelHandlerContext.fireChannelRead(request);
                     return;
-                } catch (AuthenticationException var5) {
-                    var5.printStackTrace();
                 }
-
+            } catch (AuthenticationException var5) {
+                result = new StandardResult(401,"Restore JWTToken Failure! CAUSE："+var5.getMessage());
             }
-            result = new StandardResult(401,"Restore JWTToken Failure!");
         }else {
             result = new StandardResult(401, "HttpHeader.AUTHORIZATION is null!");
         }
@@ -86,6 +86,7 @@ public class JwtHandler extends SimpleChannelInboundHandler<JwtHttpRequest> {
 
             return new JWTAuthenticationToken(o, token);
         } catch (ParseException |JSONException ex) {
+            //Invalid serialized plain/JWS/JWE object: Missing part delimiters
             throw new AuthenticationException(ex);
         }
 

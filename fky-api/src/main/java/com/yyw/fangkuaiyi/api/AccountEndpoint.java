@@ -1,6 +1,7 @@
 package com.yyw.fangkuaiyi.api;
 
 import com.yyw.fangkuaiyi.account.pojo.Account;
+import com.yyw.fangkuaiyi.codec.response.StandardResult;
 import com.yyw.fangkuaiyi.security.ShiroUser;
 import com.yyw.fangkuaiyi.security.jwt.JWTTokenService;
 import com.yyw.fangkuaiyi.security.jwt.TokenResponse;
@@ -29,7 +30,7 @@ public class AccountEndpoint {
     @Path("/login")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
-    public TokenResponse login(Account user) {
+    public StandardResult login(Account user) {
         //当前Subject
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken uptoken = new UsernamePasswordToken(
@@ -44,18 +45,21 @@ public class AccountEndpoint {
         } catch (Exception e) {//登录失败
             e.printStackTrace();
         }
-
+        Subject subject2 = SecurityUtils.getSubject();
+        subject2.hasRole("admin");
         ShiroUser cuuser = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
         TokenResponse token = tokens.createToken(cuuser);
-        return token;
+        return new StandardResult(token);
     }
 
-    @GET
+    @POST
     @Path("/tet")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     @RequiresRoles("admin")
-    public String tet() {
-        return "------auth.tet()-------";
+    public StandardResult tet() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.hasRole("admin");
+        return new StandardResult("------auth.tet()-------");
     }
 }
