@@ -4,12 +4,15 @@ import com.google.common.collect.Lists;
 import com.yyw.fangkuaiyi.security.jwt.realm.JWTRealm;
 import com.yyw.fangkuaiyi.security.shiro.realm.StandardRealm;
 import com.yyw.fangkuaiyi.security.utils.constants.Securitys;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
+import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,6 +103,14 @@ public class ShiroConfiguration {
 //        dwsm.setSubjectFactory(subjectFactory);
         dwsm.setCacheManager(cacheManager);
         return dwsm;
+    }
+
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultWebSecurityManager dwsm) {
+        AuthorizationAttributeSourceAdvisor aasa = new AuthorizationAttributeSourceAdvisor();
+        aasa.setSecurityManager(dwsm);
+        SecurityUtils.setSecurityManager(dwsm);
+        return new AuthorizationAttributeSourceAdvisor();
     }
 
 }

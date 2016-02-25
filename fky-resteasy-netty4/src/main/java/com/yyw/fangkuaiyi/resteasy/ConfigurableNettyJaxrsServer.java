@@ -16,8 +16,6 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.ssl.SslHandler;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.mgt.SecurityManager;
 import org.jboss.resteasy.core.SynchronousDispatcher;
 import org.jboss.resteasy.plugins.server.netty.*;
 
@@ -85,7 +83,6 @@ public class ConfigurableNettyJaxrsServer extends NettyJaxrsServer {
 
 	private EventLoopGroup eventLoopGroup;
 	private EventLoopGroup eventExecutor;
-	private SecurityManager securityManager;
 	private int ioWorkerCount = Runtime.getRuntime().availableProcessors() * 2;
 	private int executorThreadCount = 16;
 	private SSLContext sslContext;
@@ -133,16 +130,12 @@ public class ConfigurableNettyJaxrsServer extends NettyJaxrsServer {
 		this.backlog = backlog;
 	}
 
-	public void setSecurityManager(SecurityManager securityManager) {
-		this.securityManager = securityManager;
-	}
-
 	@Override
 	public void start() {
 		eventLoopGroup = new NioEventLoopGroup(ioWorkerCount);
 		eventExecutor = new NioEventLoopGroup(executorThreadCount);
 		deployment.start();
-		SecurityUtils.setSecurityManager(securityManager);
+
 		final RequestDispatcher dispatcher = new RequestDispatcher((SynchronousDispatcher)deployment.getDispatcher(), deployment.getProviderFactory(), domain);
 		// Configure the server.
 		if (sslContext == null) {
