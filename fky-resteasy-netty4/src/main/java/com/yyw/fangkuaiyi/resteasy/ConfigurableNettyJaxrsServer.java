@@ -2,10 +2,7 @@ package com.yyw.fangkuaiyi.resteasy;
 
 import com.yyw.fangkuaiyi.resteasy.handlers.CorsHeadersChannelHandler;
 
-import com.yyw.fangkuaiyi.security.handlers.AuthBasicHandler;
-import com.yyw.fangkuaiyi.security.handlers.JwtHandler;
-import com.yyw.fangkuaiyi.security.handlers.ShiroHandler;
-import com.yyw.fangkuaiyi.security.handlers.StatelessHandler;
+import com.yyw.fangkuaiyi.security.handlers.*;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -152,9 +149,12 @@ public class ConfigurableNettyJaxrsServer extends NettyJaxrsServer {
 							ch.pipeline().addLast(new CorsHeadersChannelHandler());
 
 							ch.pipeline().addLast(new ShiroHandler());
+							ch.pipeline().addLast(new AnonHandler());
 							ch.pipeline().addLast(new StatelessHandler());
 							ch.pipeline().addLast(new AuthBasicHandler());
 							ch.pipeline().addLast(new JwtHandler());
+							ch.pipeline().addLast(new RolesHandler());
+							ch.pipeline().addLast(new PermissionsHandler());
 
 							ch.pipeline().addLast(new RestEasyHttpResponseEncoder());
 							ch.pipeline().addLast(eventExecutor, new RequestHandler(dispatcher));
@@ -178,9 +178,12 @@ public class ConfigurableNettyJaxrsServer extends NettyJaxrsServer {
 							ch.pipeline().addLast(new CorsHeadersChannelHandler());
 
 							ch.pipeline().addLast(new ShiroHandler());
+							ch.pipeline().addLast(new AnonHandler());
 							ch.pipeline().addLast(new StatelessHandler());
 							ch.pipeline().addLast(new AuthBasicHandler());
 							ch.pipeline().addLast(new JwtHandler());
+							ch.pipeline().addLast(new RolesHandler());
+							ch.pipeline().addLast(new PermissionsHandler());
 
 							ch.pipeline().addLast(new RestEasyHttpResponseEncoder());
 							ch.pipeline().addLast(eventExecutor, new RequestHandler(dispatcher));

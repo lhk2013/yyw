@@ -3,6 +3,7 @@ package com.yyw.fangkuaiyi.security.shiro.realm;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.yyw.fangkuaiyi.account.AccountFacade;
 import com.yyw.fangkuaiyi.account.pojo.Account;
+import com.yyw.fangkuaiyi.role.pojo.Role;
 import com.yyw.fangkuaiyi.security.ShiroUser;
 import com.yyw.fangkuaiyi.security.utils.constants.Securitys;
 
@@ -63,18 +64,18 @@ public class StandardRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
-//        User user = accountService.findUserByLoginName(shiroUser.loginName);
+        Account user = accountFacade.findAccount(shiroUser.getLoginName());
 
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-//        for (Role role : user.getRoles()) {
+        for (Role role : user.getRoles()) {
         // 基于Role的权限信息
 //            info.addRole(role.roleName);
-        info.addRole("system");
+        info.addRole(role.getRoleName());
 
         // 基于Permission的权限信息
 //            info.addStringPermissions(Lists.newArrayList("SHOW:UNOPENED"));
-//        }
+        }
         return info;
     }
 

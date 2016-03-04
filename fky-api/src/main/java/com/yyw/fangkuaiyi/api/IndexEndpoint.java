@@ -21,7 +21,7 @@ public class IndexEndpoint {
     @Path("/test")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
-    @RequiresRoles("admin")
+    //@RequiresRoles("admin")
     public StandardResult tet() {
         return new StandardResult("------index.tet()-------");
     }

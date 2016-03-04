@@ -45,8 +45,6 @@ public class AccountEndpoint {
         } catch (Exception e) {//登录失败
             e.printStackTrace();
         }
-        Subject subject2 = SecurityUtils.getSubject();
-        subject2.hasRole("admin");
         ShiroUser cuuser = (ShiroUser) SecurityUtils.getSubject().getPrincipal();
         TokenResponse token = tokens.createToken(cuuser);
         return new StandardResult(token);
@@ -56,10 +54,10 @@ public class AccountEndpoint {
     @Path("/tet")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
-    @RequiresRoles("admin")
+//    @RequiresRoles("admin")
     public StandardResult tet() {
         Subject subject = SecurityUtils.getSubject();
-        subject.hasRole("admin");
+        System.out.println(subject.hasRole("admin"));
         return new StandardResult("------auth.tet()-------");
     }
 }

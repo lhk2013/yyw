@@ -44,4 +44,8 @@ insert into user_role (user_id,role_id) values(2,2);
 insert into user_role (user_id,role_id) values(2,3);
 
 insert into url_filter (id,name,url,basics,roles,permissions) values(1,'url测试1','/v1/account/text','authc','system',null);
---insert into url_filter (id,name,url,basics,roles,permissions) values(2,'url测试2','/v1/account/text','ssl',null,null);
+--insert into url_filter (id,name,url,basics,roles,permissions) values(2,'url测试2','/v1/account/**','anon',null,null);
+--insert into url_filter (id,name,url,basics,roles,permissions) values(2,'url测试2','/v1/account/login','login',null,null);
+--insert into url_filter (id,name,url,basics,roles,permissions) values(2,'url测试2','/v1/log/**','jwt',log,null);
+--insert into url_filter (id,name,url,basics,roles,permissions) values(2,'url测试2','/v1/account/**','jwt',null,account:gg:add);
+--insert into url_filter (id,name,url,basics,roles,permissions) values(2,'url测试2','/**','anon',null,account:gg:add);

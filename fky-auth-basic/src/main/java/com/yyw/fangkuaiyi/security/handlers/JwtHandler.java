@@ -1,11 +1,11 @@
 package com.yyw.fangkuaiyi.security.handlers;
 
 import com.nimbusds.jose.JWSObject;
-import com.yyw.fangkuaiyi.codec.request.JwtHttpRequest;
+import com.yyw.fangkuaiyi.codec.request.Jwt;
 import com.yyw.fangkuaiyi.codec.response.StandardResponse;
 import com.yyw.fangkuaiyi.codec.response.StandardResult;
 import com.yyw.fangkuaiyi.security.jwt.JWTAuthenticationToken;
-import com.yyw.fangkuaiyi.util.JsonMapper;
+import com.yyw.fangkuaiyi.security.mgt.FkyHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.apache.shiro.SecurityUtils;
@@ -21,16 +21,17 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.text.ParseException;
 
+import static com.yyw.fangkuaiyi.security.mgt.DefaultHandler.roles;
 import static org.jboss.resteasy.util.HttpHeaderNames.AUTHORIZATION;
 
 /**
  * Created by lins on 16-2-23.
  */
-public class JwtHandler extends SimpleChannelInboundHandler<JwtHttpRequest> {
+public class JwtHandler extends SimpleChannelInboundHandler<Jwt> implements FkyHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtHandler.class);
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, JwtHttpRequest jwt) throws Exception {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Jwt jwt) throws Exception {
         StandardResult result = null;
         NettyHttpRequest request = (NettyHttpRequest) jwt.getRequest();
         if (request.getHttpMethod().equals("OPTIONS")){channelHandlerContext.fireChannelRead(request);
@@ -43,7 +44,7 @@ public class JwtHandler extends SimpleChannelInboundHandler<JwtHttpRequest> {
                     Subject e = SecurityUtils.getSubject();
                     e.login(token);
 
-                    channelHandlerContext.fireChannelRead(request);
+                    channelHandlerContext.fireChannelRead(this.newInstance(roles.name(),request));
                     return;
                 }
             } catch (AuthenticationException var5) {
